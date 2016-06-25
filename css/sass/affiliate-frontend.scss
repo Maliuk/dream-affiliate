@@ -202,7 +202,7 @@ header {
         }
 
         td, th, a {
-            line-height: 25px;
+            //line-height: 25px;
         }
 
         td:last-child {
@@ -312,19 +312,16 @@ header {
 }
 
 /* info page */
-.da-info, .da-register-page {
-    form {
-        h5 {
-            padding: 10px 0;
-            border-bottom: 1px solid $light-gray;
-            margin: 0 0 20px 0;
-        }
-
-        .da-row + h5 {
-            margin-top: 35px;
-        }
+form#da-edit-user, form#da-register-user {
+    h5 {
+        padding: 10px 0;
+        border-bottom: 1px solid $light-gray;
+        margin: 0 0 20px 0;
     }
 
+    .da-row + h5 {
+        margin-top: 35px;
+    }
     label {
         float: left;
         width: 184px;
@@ -332,11 +329,11 @@ header {
         margin: 0;
     }
     input:not([type="submit"]), select {
-        width: 100%;
+        width: 100% !important;
         max-width: 515px;
         height: 35px;
-        padding: 0 15px;
-        margin-bottom: 15px;
+        padding: 0 15px !important;
+        margin-bottom: 15px !important;
         border: 1px solid $light-gray;
         font-size: 14px;
         color: inherit;

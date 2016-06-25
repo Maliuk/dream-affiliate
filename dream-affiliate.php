@@ -19,7 +19,7 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 if (!class_exists('DreamAffiliate')) {
 
     class DreamAffiliate {
-        
+
         public static $affiliate_id;
 
         public function __construct() {
@@ -42,41 +42,43 @@ if (!class_exists('DreamAffiliate')) {
         }
 
         function wp_loaded_action() {
-            /*$user_ID = get_current_user_id();
+            /* $user_ID = get_current_user_id();
 
-            global $wpdb;
-            $table_name = $wpdb->prefix . "dream_affiliate";
+              global $wpdb;
+              $table_name = $wpdb->prefix . "dream_affiliate";
 
-            $affiliate_id = $wpdb->get_var("SELECT id FROM $table_name WHERE partner_id=$user_ID");
+              $affiliate_id = $wpdb->get_var("SELECT id FROM $table_name WHERE partner_id=$user_ID");
 
-            DreamAffiliate::$affiliate_id = $affiliate_id;*/
-            
+              DreamAffiliate::$affiliate_id = $affiliate_id; */
+
             //wp_set_password('qwerty123', 85);
         }
 
         function user_register_action($user_id) {
             if (isset($_COOKIE['da_affiliate'])) {
                 $this->addClient($_COOKIE['da_affiliate'], $user_id);
-                setcookie('da_affiliate', "",  strtotime('-1 day'));
+                setcookie('da_affiliate', "", strtotime('-1 day'));
             }
         }
 
-        public function registerUser($user_name, $user_email, $password) {
+        public function registerUser($userdata, $usermeta) {
 
-            $user_id = wp_create_user($user_name, $password, $user_email);
+            //$user_id = wp_create_user($user_name, $password, $user_email, $userdata, $usermeta);
+            $user = array(
+                'role' => 'partner', // (строка) роль пользователя
+            );
+
+            $userdata = array_merge($user, $userdata);
+
+            $user_id = wp_insert_user($userdata);
 
             if (gettype($user_id) != 'object') {
-                $userdata = array(
-                    'ID' => $user_id, // когда нужно обновить пользователя
-                    'user_pass' => $password, // обязательно
-                    'user_login' => $user_name, // обязательно
-                    'user_email' => $user_email,
-                    'role' => 'partner', // (строка) роль пользователя
-                );
 
-                wp_insert_user($userdata);
-                
                 wp_set_password($password, $user_id);
+
+                foreach ($usermeta as $key => $meta) {
+                    update_user_meta($user_id, $key, $meta);
+                }
 
                 wp_set_auth_cookie($user_id, false, is_ssl());
 
@@ -85,53 +87,53 @@ if (!class_exists('DreamAffiliate')) {
                 $wpdb->insert($table_name, array(
                     'partner_id' => $user_id
                 ));
-                wp_redirect('/affiliate');
+                wp_redirect('/affiliate/dashboard');
             }
 
             return $user_id;
         }
-        
+
         public function updateCurrentUser($userdata = array(), $usermeta = array()) {
             $current_user = wp_get_current_user();
-            
+
             $user = array(
                 'ID' => $current_user->ID,
                 'user_login' => $current_user->user_login
             );
-            
+
             $userdata = array_merge($user, $userdata);
-            
+
 //            if (isset($userdata['user_pass'])) {
 //                $userdata['user_pass'] = wp_hash_password($userdata['user_pass']);
 //            }
-            
-            foreach($usermeta as $key => $meta) {
+
+            foreach ($usermeta as $key => $meta) {
                 update_user_meta($current_user->ID, $key, $meta);
             }
-            
+
             return wp_update_user($userdata);
         }
-        
+
         function addClient($affiliate_id, $client_id) {
             global $wpdb;
             $table_name = $wpdb->prefix . "dream_affiliate_clients";
-            
+
             return $wpdb->insert($table_name, array(
-                'affiliate_id' => $affiliate_id,
-                'client_id' => $client_id
+                        'affiliate_id' => $affiliate_id,
+                        'client_id' => $client_id
             ));
         }
-        
+
         public function getClients() {
             global $wpdb;
             $table_affiliate = $wpdb->prefix . "dream_affiliate";
             $table_clients = $wpdb->prefix . "dream_affiliate_clients";
             $table_users = $wpdb->users;
             $affiliate_id = $this->getAffiliateId();
-            
+
             $results = $wpdb->get_results("SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
                     . " WHERE users.ID = clients.client_id AND clients.affiliate_id = $affiliate_id GROUP BY users.ID ORDER BY users.user_registered DESC");
-            
+
             return $results;
         }
 
@@ -149,7 +151,7 @@ if (!class_exists('DreamAffiliate')) {
         public function getAffiliateUrl() {
             return get_home_url() . '/?affiliate=' . $this->getAffiliateId();
         }
-        
+
         public function getCurrentUser() {
             $current_user = wp_get_current_user();
             return $current_user;
@@ -236,6 +238,6 @@ if (!class_exists('DreamAffiliate')) {
 
     global $da;
     $da = new DreamAffiliate();
-    
+
     require_once 'functions.php';
 }

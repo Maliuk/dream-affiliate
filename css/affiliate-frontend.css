@@ -145,8 +145,6 @@ header {
       #da-content table td.da-active, #da-content table th.da-active {
         background-color: #45be89;
         color: #fff; }
-    #da-content table td, #da-content table th, #da-content table a {
-      line-height: 25px; }
     #da-content table td:last-child {
       text-align: right; }
     #da-content table .da-action {
@@ -215,23 +213,23 @@ header {
         background-image: url(../images/di4.png); }
 
 /* info page */
-.da-info form h5, .da-register-page form h5 {
+form#da-edit-user h5, form#da-register-user h5 {
   padding: 10px 0;
   border-bottom: 1px solid #f1f1f1;
   margin: 0 0 20px 0; }
-.da-info form .da-row + h5, .da-register-page form .da-row + h5 {
+form#da-edit-user .da-row + h5, form#da-register-user .da-row + h5 {
   margin-top: 35px; }
-.da-info label, .da-register-page label {
+form#da-edit-user label, form#da-register-user label {
   float: left;
   width: 184px;
   line-height: 35px;
   margin: 0; }
-.da-info input:not([type="submit"]), .da-info select, .da-register-page input:not([type="submit"]), .da-register-page select {
-  width: 100%;
+form#da-edit-user input:not([type="submit"]), form#da-edit-user select, form#da-register-user input:not([type="submit"]), form#da-register-user select {
+  width: 100% !important;
   max-width: 515px;
   height: 35px;
-  padding: 0 15px;
-  margin-bottom: 15px;
+  padding: 0 15px !important;
+  margin-bottom: 15px !important;
   border: 1px solid #f1f1f1;
   font-size: 14px;
   color: inherit; }

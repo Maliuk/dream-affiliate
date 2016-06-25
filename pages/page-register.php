@@ -7,60 +7,84 @@ if (is_user_logged_in) {
 }
 
 if (isset($_POST['login']) && isset($_POST['account_email']) && isset($_POST['password']) && isset($_POST['confirm_password'])) {
-    $errorConf = $userError = false;
+    $errorConf = false;
 
-    $name = $_POST['login'];
-    $account_email = $_POST['account_email'];
     $password = $_POST['password'];
     $conf_password = $_POST['confirm_password'];
+
+    $userdata = array();
+    $userdata['user_login'] = $_POST['login'];
+    $userdata['first_name'] = $_POST['first_name'];
+    $userdata['last_name'] = $_POST['last_name'];
+    $userdata['user_url'] = $_POST['website'];
+    $userdata['user_email'] = $_POST['account_email'];
+
+    $usermeta = array();
+    $usermeta['partner_company_name'] = $_POST['partner_company_name'];
+    $usermeta['partner_phone_number'] = $_POST['partner_phone_number'];
+    $usermeta['partner_address'] = $_POST['partner_address'];
+    $usermeta['partner_city'] = $_POST['partner_city'];
+    $usermeta['partner_zip'] = $_POST['partner_zip'];
+    $usermeta['partner_country'] = $_POST['partner_country'];
+    $usermeta['partner_state'] = $_POST['partner_state'];
+    $usermeta['partner_paypal'] = $_POST['partner_paypal'];
 
     if ($password !== $conf_password) {
         $errorConf = true;
     } else {
         global $da;
-        $user_id = $da->registerUser($name, $account_email, $password);
-
-        if (gettype($user_id) != 'integer') {
-            $userError = true;
-        }
+        $user_id = $da->registerUser($userdata, $usermeta);
     }
 }
 ?>
 
 <div class="da-container da-register-page">
+    <?php
+    if ($user_id->errors) {
+        foreach ($user_id->errors as $key => $errors) {
+            foreach ($errors as $error)
+                echo '<span class="da-message da-error">' . $error . '</span>';
+        }
+    }
+    
+    if ($errorConf) {
+        echo '<span class="da-message da-error">Wrong password!</span>';
+    }
+    ?>
+
     <form id="da-register-user" method="POST">
         <h5>Personal information</h5>
 
         <div class="da-row">
             <label for="login">Login *</label>
-            <input type="text" name="login" id="login" required value="<?php echo $name; ?>" />
+            <input type="text" name="login" id="login" required value="<?php echo $userdata['user_login']; ?>" />
         </div>
 
         <div class="da-row">
             <label for="first_name">First name</label>
-            <input type="text" name="first_name" id="first_name" value="<?php echo $current_user->first_name; ?>" />
+            <input type="text" name="first_name" id="first_name" value="<?php echo $userdata['first_name']; ?>" />
         </div>
 
         <div class="da-row">
             <label for="last_name">Last name</label>
-            <input type="text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" />
+            <input type="text" name="last_name" id="last_name" value="<?php echo $userdata['last_name']; ?>" />
         </div>
 
         <div class="da-row">
-            <label for="company_name">Company name</label>
-            <input type="text" name="company_name" id="company_name" value="<?php echo get_user_meta($current_user->ID, 'company_name', true); ?>" />
+            <label for="partner_company_name">Company name</label>
+            <input type="text" name="partner_company_name" id="partner_company_name" value="<?php echo $usermeta['partner_company_name']; ?>" />
         </div>
 
         <div class="da-row">
             <label for="website">Website</label>
-            <input type="url" name="website" id="website" value="<?php echo $current_user->user_url; ?>" />
+            <input type="url" name="website" id="website" value="<?php echo $userdata['user_url']; ?>" />
         </div>
 
         <h5>Account information</h5>
 
         <div class="da-row">
             <label for="account_email">Account email *</label>
-            <input type="email" name="account_email" id="account_email" required value="<?php echo $current_user->user_email; ?>" />
+            <input type="email" name="account_email" id="account_email" required value="<?php echo $userdata['user_email']; ?>" />
         </div>
 
         <div class="da-row">
@@ -77,22 +101,22 @@ if (isset($_POST['login']) && isset($_POST['account_email']) && isset($_POST['pa
 
         <div class="da-row">
             <label for="partner_phone_number">Phone number</label>
-            <input type="text" name="partner_phone_number" id="partner_phone_number" value="<?php echo get_user_meta($current_user->ID, 'partner_phone_number', true); ?>" />
+            <input type="text" name="partner_phone_number" id="partner_phone_number" value="<?php echo $usermeta['partner_phone_number']; ?>" />
         </div>
 
         <div class="da-row">
             <label for="partner_address">Address</label>
-            <input type="text" name="partner_address" id="partner_address" value="<?php echo get_user_meta($current_user->ID, 'partner_address', true); ?>" />
+            <input type="text" name="partner_address" id="partner_address" value="<?php echo $usermeta['partner_address']; ?>" />
         </div>
 
         <div class="da-row">
             <label for="partner_city">City</label>
-            <input type="text" name="partner_city" id="partner_city" value="<?php echo get_user_meta($current_user->ID, 'partner_city', true); ?>" />
+            <input type="text" name="partner_city" id="partner_city" value="<?php echo $usermeta['partner_city']; ?>" />
         </div>
 
         <div class="da-row">
             <label for="partner_zip">Zip / Postal Code</label>
-            <input type="text" name="partner_zip" id="partner_zip" value="<?php echo get_user_meta($current_user->ID, 'partner_zip', true); ?>" />
+            <input type="text" name="partner_zip" id="partner_zip" value="<?php echo $usermeta['partner_zip']; ?>" />
         </div>
 
         <div class="da-row">
@@ -413,7 +437,7 @@ if (isset($_POST['login']) && isset($_POST['account_email']) && isset($_POST['pa
 
         <div class="da-row">
             <label for="partner_paypal">Paypal account</label>
-            <input type="email" name="partner_paypal" id="partner_paypal" value="<?php echo get_user_meta($current_user->ID, 'partner_paypal', true); ?>" />
+            <input type="email" name="partner_paypal" id="partner_paypal" value="<?php echo $usermeta['partner_paypal']; ?>" />
         </div>
 
         <div class="da-row da-text-right">
@@ -423,6 +447,17 @@ if (isset($_POST['login']) && isset($_POST['account_email']) && isset($_POST['pa
 
     <script>
         jQuery(document).ready(function ($) {
+<?php if (isset($usermeta['partner_country'])) { ?>
+                $('#partner_country option[value="<?php echo $usermeta['partner_country']; ?>"]').attr("selected", "selected");
+
+                if ($('#partner_country option:selected').val() == 'US') {
+                    $('#partner_state option[value="<?php echo $usermeta['partner_state']; ?>"]').attr("selected", "selected");
+                }
+                else {
+                    $('#partner_state').attr('disabled', 'disabled');
+                }
+<?php } ?>
+
             $('#partner_country').on("change", function () {
                 if ($('option:selected', this).val() == 'US') {
                     $('#partner_state').removeAttr('disabled');

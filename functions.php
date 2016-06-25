@@ -16,8 +16,18 @@ function my_theme_redirect() {
         }
 
         do_theme_redirect($return_template);
-    } else if ($wp->query_vars["pagename"] == 'affiliate') {
+    } else if ($wp->query_vars["pagename"] == 'affiliate/dashboard') {
         $templatefilename = 'page-dashboard.php';
+
+        if (file_exists(TEMPLATEPATH . '/' . $templatefilename)) {
+            $return_template = TEMPLATEPATH . '/' . $templatefilename;
+        } else {
+            $return_template = $plugindir . '/pages/' . $templatefilename;
+        }
+
+        do_theme_redirect($return_template);
+    } else if ($wp->query_vars["pagename"] == 'affiliate') {
+        $templatefilename = 'page-affiliate.php';
 
         if (file_exists(TEMPLATEPATH . '/' . $templatefilename)) {
             $return_template = TEMPLATEPATH . '/' . $templatefilename;
@@ -66,7 +76,7 @@ function update_user() {
     $userdata['user_email'] = $_POST['account_email'];
 
     $usermeta = array();
-    $usermeta['company_name'] = $_POST['company_name'];
+    $usermeta['partner_company_name'] = $_POST['partner_company_name'];
     $usermeta['partner_phone_number'] = $_POST['partner_phone_number'];
     $usermeta['partner_address'] = $_POST['partner_address'];
     $usermeta['partner_city'] = $_POST['partner_city'];

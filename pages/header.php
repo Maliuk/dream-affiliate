@@ -30,5 +30,6 @@
         <![endif]-->
         
         <header>
+            <a href="<?php echo wp_logout_url(); ?>">logout</a>
             Affiliate Program
         </header>

@@ -30,8 +30,8 @@ $current_user = $da->getCurrentUser();
         </div>
 
         <div class="da-row">
-            <label for="company_name">Company name</label>
-            <input type="text" name="company_name" id="company_name" value="<?php echo get_user_meta($current_user->ID, 'company_name', true); ?>" />
+            <label for="partner_company_name">Company name</label>
+            <input type="text" name="partner_company_name" id="partner_company_name" value="<?php echo get_user_meta($current_user->ID, 'partner_company_name', true); ?>" />
         </div>
 
         <div class="da-row">
