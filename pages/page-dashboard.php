@@ -3,7 +3,7 @@
 <!-- CONTENT -->
 
 <?php if (!is_user_logged_in()) { ?>
-    <div class="da-container">
+    <div class="da-container da-login-form">
         <?php
         $args = array(
             'redirect' => '/'

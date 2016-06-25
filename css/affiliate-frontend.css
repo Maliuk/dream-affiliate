@@ -16,14 +16,6 @@ header {
   padding: 50px 0;
   overflow: hidden; }
 
-.da-error {
-  display: block;
-  color: red;
-  padding: 7px; }
-
-.da-conf-error {
-  border: 1px solid red !important; }
-
 .da-text-center {
   text-align: center; }
 
@@ -50,22 +42,23 @@ header {
   text-align: center;
   padding: 5px 15px;
   margin: 5px 0; }
-
-.da-success {
-  background-color: rgba(69, 190, 137, 0.2);
-  color: #45be89;
-  border: 1px solid #45be89; }
-
-.da-error {
-  color: #f96f65;
-  background-color: rgba(249, 111, 101, 0.2);
-  border: 1px solid #f96f65; }
+  .da-message .da-success {
+    background-color: rgba(69, 190, 137, 0.2);
+    color: #45be89;
+    border: 1px solid #45be89; }
+  .da-message .da-error {
+    color: #f96f65;
+    background-color: rgba(249, 111, 101, 0.2);
+    border: 1px solid #f96f65; }
 
 #da-wrapper {
   overflow: hidden; }
 
 .da-register-page {
   margin-top: 120px; }
+
+.da-login-form {
+  padding-top: 120px; }
 
 #da-content {
   position: relative;
