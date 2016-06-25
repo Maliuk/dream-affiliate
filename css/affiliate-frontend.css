@@ -64,6 +64,9 @@ header {
 #da-wrapper {
   overflow: hidden; }
 
+.da-register-page {
+  margin-top: 120px; }
+
 #da-content {
   position: relative;
   font-size: 16px;
@@ -71,8 +74,7 @@ header {
   color: #333333;
   padding: 120px 35px 35px 35px;
   background-color: #f1f1f1;
-  margin: 0 0 0 265px;
-  /* info page */ }
+  margin: 0 0 0 265px; }
   #da-content pre {
     display: block;
     background-color: rgba(0, 192, 227, 0.25);
@@ -211,26 +213,28 @@ header {
         background-image: url(../images/di3.png); }
       #da-content .da-bigicons-list li:nth-child(4) .da-icon {
         background-image: url(../images/di4.png); }
-  #da-content .da-info form h5 {
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f1f1;
-    margin: 0 0 20px 0; }
-  #da-content .da-info form .da-row + h5 {
-    margin-top: 35px; }
-  #da-content .da-info label {
-    float: left;
-    width: 184px;
-    line-height: 35px;
-    margin: 0; }
-  #da-content .da-info input:not([type="submit"]), #da-content .da-info select {
-    width: 100%;
-    max-width: 515px;
-    height: 35px;
-    padding: 0 15px;
-    margin-bottom: 15px;
-    border: 1px solid #f1f1f1;
-    font-size: 14px;
-    color: inherit; }
+
+/* info page */
+.da-info form h5, .da-register-page form h5 {
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f1f1;
+  margin: 0 0 20px 0; }
+.da-info form .da-row + h5, .da-register-page form .da-row + h5 {
+  margin-top: 35px; }
+.da-info label, .da-register-page label {
+  float: left;
+  width: 184px;
+  line-height: 35px;
+  margin: 0; }
+.da-info input:not([type="submit"]), .da-info select, .da-register-page input:not([type="submit"]), .da-register-page select {
+  width: 100%;
+  max-width: 515px;
+  height: 35px;
+  padding: 0 15px;
+  margin-bottom: 15px;
+  border: 1px solid #f1f1f1;
+  font-size: 14px;
+  color: inherit; }
 
 .da-title {
   font-size: 24px;

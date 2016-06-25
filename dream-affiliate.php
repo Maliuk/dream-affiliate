@@ -101,9 +101,9 @@ if (!class_exists('DreamAffiliate')) {
             
             $userdata = array_merge($user, $userdata);
             
-            if (isset($userdata['user_pass'])) {
-                $userdata['user_pass'] = wp_hash_password($userdata['user_pass']);
-            }
+//            if (isset($userdata['user_pass'])) {
+//                $userdata['user_pass'] = wp_hash_password($userdata['user_pass']);
+//            }
             
             foreach($usermeta as $key => $meta) {
                 update_user_meta($current_user->ID, $key, $meta);
@@ -130,7 +130,7 @@ if (!class_exists('DreamAffiliate')) {
             $affiliate_id = $this->getAffiliateId();
             
             $results = $wpdb->get_results("SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
-                    . " WHERE users.ID = clients.client_id GROUP BY users.ID ORDER BY users.user_registered DESC");
+                    . " WHERE users.ID = clients.client_id AND clients.affiliate_id = $affiliate_id GROUP BY users.ID ORDER BY users.user_registered DESC");
             
             return $results;
         }
