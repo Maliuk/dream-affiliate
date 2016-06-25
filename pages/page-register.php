@@ -18,6 +18,7 @@ if (isset($_POST['login']) && isset($_POST['account_email']) && isset($_POST['pa
     $userdata['last_name'] = $_POST['last_name'];
     $userdata['user_url'] = $_POST['website'];
     $userdata['user_email'] = $_POST['account_email'];
+    $userdata['user_pass'] = $password;
 
     $usermeta = array();
     $usermeta['partner_company_name'] = $_POST['partner_company_name'];

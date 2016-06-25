@@ -74,7 +74,7 @@ if (!class_exists('DreamAffiliate')) {
 
             if (gettype($user_id) != 'object') {
 
-                wp_set_password($password, $user_id);
+                wp_set_password($userdata['user_pass'], $user_id);
 
                 foreach ($usermeta as $key => $meta) {
                     update_user_meta($user_id, $key, $meta);
