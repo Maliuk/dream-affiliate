@@ -1,4 +1,4 @@
-<?php require_once 'header.php'; ?>
+<?php require_once 'includes/header.php'; ?>
 
 <?php
 if (is_user_logged_in) {
@@ -472,4 +472,4 @@ if (isset($_POST['login']) && isset($_POST['account_email']) && isset($_POST['pa
     </script>
 </div>
 
-<?php require_once 'footer.php'; ?>
+<?php require_once 'includes/footer.php'; ?>

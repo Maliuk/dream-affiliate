@@ -1,4 +1,4 @@
-<?php require_once 'header.php'; ?>
+<?php require_once 'includes/header.php'; ?>
 
 <!-- CONTENT -->
 
@@ -13,7 +13,7 @@
     </div>
 <?php
 } else if (current_user_can('partner') || current_user_can('administrator')) {
-    require_once 'sidebar.php'; ?>
+    require_once 'includes/sidebar.php'; ?>
 
 <div id="da-content">
     <div class="da-preloader">
@@ -28,4 +28,4 @@
 
 <!-- CONTENT -->
 
-<?php require_once 'footer.php'; ?>
+<?php require_once 'includes/footer.php'; ?>
