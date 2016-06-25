@@ -37,19 +37,21 @@ if (!class_exists('DreamAffiliate')) {
                 setcookie('da_affiliate', $_GET['affiliate'], strtotime('+1 day'));
             }
 
-            //add_action('wp_loaded', [$this, 'wp_loaded_action'], 99);
+            add_action('wp_loaded', [$this, 'wp_loaded_action'], 99);
             add_action('user_register', [$this, 'user_register_action'], 99);
         }
 
         function wp_loaded_action() {
-            $user_ID = get_current_user_id();
+            /*$user_ID = get_current_user_id();
 
             global $wpdb;
             $table_name = $wpdb->prefix . "dream_affiliate";
 
             $affiliate_id = $wpdb->get_var("SELECT id FROM $table_name WHERE partner_id=$user_ID");
 
-            DreamAffiliate::$affiliate_id = $affiliate_id;
+            DreamAffiliate::$affiliate_id = $affiliate_id;*/
+            
+            //wp_set_password('qwerty123', 85);
         }
 
         function user_register_action($user_id) {
@@ -99,11 +101,15 @@ if (!class_exists('DreamAffiliate')) {
             
             $userdata = array_merge($user, $userdata);
             
+            if (isset($userdata['user_pass'])) {
+                $userdata['user_pass'] = wp_hash_password($userdata['user_pass']);
+            }
+            
             foreach($usermeta as $key => $meta) {
                 update_user_meta($current_user->ID, $key, $meta);
             }
             
-            return wp_insert_user($userdata);
+            return wp_update_user($userdata);
         }
         
         function addClient($affiliate_id, $client_id) {

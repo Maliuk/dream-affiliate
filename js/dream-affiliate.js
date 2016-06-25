@@ -95,11 +95,18 @@ jQuery(document).ready(function ($) {
             $('.da-inner-preloader').removeClass('da-hidden');
 
             $.post(da_variables.ajax_url, data).success(function (response) {
-                //alert( JSON.stringify(response) );
+                //alert(JSON.stringify(response));
                 if (response.success == true) {
                     if (response.data.errors && response.data.errors.existing_user_email) {
                         showMessage('.messages', response.data.errors.existing_user_email, true);
-                    } else {
+                    }
+                    else if (response.data.errors && response.data.errors.confirm_password) {
+                        showMessage('.messages', response.data.errors.confirm_password, true);
+                    }
+                    else if (response.data.errors) {
+                        showMessage('.messages', 'Error', true);
+                    }
+                    else {
                         showMessage('.messages', 'Personal Information is updated.');
                     }
                 }
@@ -115,15 +122,15 @@ jQuery(document).ready(function ($) {
             return false;
         });
     }
-    
-    
+
+
     function showMessage(obj, message, error) {
         var $target = $(obj);
         $target.append('<span class="da-message ' + (error ? 'da-error' : 'da-success') + '">' + message + '</span>');
-        
+
         var $message = $('.da-message:last-child', $target);
         $message.slideDown(300);
-        
+
         setTimeout(function () {
             $message.slideUp(300, function () {
                 $message.remove();

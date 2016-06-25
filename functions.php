@@ -75,7 +75,25 @@ function update_user() {
     $usermeta['partner_state'] = $_POST['partner_state'];
     $usermeta['partner_paypal'] = $_POST['partner_paypal'];
 
-    wp_send_json_success($da->updateCurrentUser($userdata, $usermeta));
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    
+    if (isset($_POST['password']) && isset($_POST['confirm_password']) && $password === $confirm_password) {
+        $userdata['user_pass'] = $password;
+    }
+
+    if ($password === $confirm_password) {
+        wp_send_json_success($da->updateCurrentUser($userdata, $usermeta));
+    }
+    else {
+        $data = array(
+            'errors' => array(
+                'confirm_password' => 'Password is wrong!'
+            )
+        );
+        
+        wp_send_json_success($data);
+    }
     die();
 }
 
