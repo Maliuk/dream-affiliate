@@ -44,6 +44,23 @@ header {
   .da-button:hover {
     background-color: #006a7d; }
 
+.da-message {
+  display: block;
+  font-size: 14px;
+  text-align: center;
+  padding: 5px 15px;
+  margin: 5px 0; }
+
+.da-success {
+  background-color: rgba(69, 190, 137, 0.2);
+  color: #45be89;
+  border: 1px solid #45be89; }
+
+.da-error {
+  color: #f96f65;
+  background-color: rgba(249, 111, 101, 0.2);
+  border: 1px solid #f96f65; }
+
 #da-wrapper {
   overflow: hidden; }
 

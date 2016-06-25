@@ -8,6 +8,12 @@ $current_user = $da->getCurrentUser();
 
     <div class="da-inner-preloader da-hidden"><img src="/wp-content/plugins/dream-affiliate/images/preloader.svg" width="126" height="126" alt="preloader" /></div>
 
+    <div class="messages">
+        
+    </div>
+<!--    <span class="da-message da-error">
+        Personal Information is updated.
+    </span>-->
     <form id="da-edit-user" method="POST">
         <h5>Personal information</h5>
 
