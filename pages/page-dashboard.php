@@ -15,7 +15,7 @@
 } else if (current_user_can('partner') || current_user_can('administrator')) {
     require_once 'includes/sidebar.php'; ?>
 
-<div id="da-content">
+<div id="da-content" class="da-dashboard-page">
     <div class="da-preloader">
         <img src="/wp-content/plugins/dream-affiliate/images/preloader.svg" width="126" height="126" alt="preloader" />
     </div>

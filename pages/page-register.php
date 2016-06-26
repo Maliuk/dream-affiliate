@@ -1,4 +1,6 @@
-<?php require_once 'includes/header.php'; ?>
+<?php require_once 'includes/header-landing.php'; ?>
+
+<div id="da-register-afterheader"></div>
 
 <?php
 if (is_user_logged_in) {

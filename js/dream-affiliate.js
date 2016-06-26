@@ -1,11 +1,12 @@
 jQuery(document).ready(function ($) {
-    $('#da-sidebar > ul > li').click(function (e) {
-        $('#da-sidebar > ul > li').removeClass('active');
-        $(this).addClass('active');
-    });
 
     $('#da-sidebar > ul > li a[href="#"]').click(function (e) {
         e.preventDefault();
+    });
+
+    $('#da-sidebar > ul > li').click(function (e) {
+        $('#da-sidebar > ul > li').removeClass('active');
+        $(this).addClass('active');
     });
 
     $('#da-sidebar > ul > li a').click(function (e) {
@@ -137,4 +138,15 @@ jQuery(document).ready(function ($) {
             });
         }, 6000);
     }
+});
+
+
+
+
+/* LANDING PAGE */
+jQuery(document).ready(function ($) {
+    $(window).load(function () {
+        $('.da-iMac, .da-iPad', '#da-landing-afterheader').addClass('da-shown');
+        $('.da-animated', '#da-landing-afterheader').addClass('da-shown');
+    });
 });

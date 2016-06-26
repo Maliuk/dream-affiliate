@@ -1,8 +1,16 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700);
+
 $dark-gray: #333333;
 $light-gray: #f1f1f1;
 $white: #fff;
 $blue: #00c0e3;
 $green: #45be89;
+
+@import "landing.scss";
+
+body.dream-affiliate {
+    font-family: 'Open Sans', sans-serif;
+}
 
 #da-header {
     position: fixed;
@@ -75,7 +83,8 @@ $green: #45be89;
 }
 
 .da-register-page {
-    margin-top: 120px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .da-login-form {
@@ -407,24 +416,24 @@ form#da-edit-user, form#da-register-user {
         @for $i from 1 through 6 {
             &:nth-child(#{$i}) a::before {
                 background-image: url(../images/i#{$i}.png);
+            }
+
+            &:nth-child(#{$i}) a:hover::before, &:nth-child(#{$i}).active a::before {
+                background-image: url(../images/i#{$i}h.png);
+            }
         }
 
-        &:nth-child(#{$i}) a:hover::before, &:nth-child(#{$i}).active a::before {
-            background-image: url(../images/i#{$i}h.png);
+        &.active a, a:hover {
+            color: #fff;
+            background-color: $blue;
+        }
+
+        &.active a::after {
+            opacity: 1;
+            visibility: visible;
+            right: 0px;
+        }
     }
-}
-
-&.active a, a:hover {
-    color: #fff;
-    background-color: $blue;
-}
-
-&.active a::after {
-    opacity: 1;
-    visibility: visible;
-    right: 0px;
-}
-}
 }
 
 .dream-affiliate .bp_chatbar {

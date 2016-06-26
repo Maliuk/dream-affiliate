@@ -17,12 +17,17 @@
         <!-- ./MODERNIZR -->
     </head>
 
-    <body class="dream-affiliate">
+    <body class="dream-affiliate da-landing-page">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <header id="da-header">
-            <a href="<?php echo wp_logout_url(); ?>">logout</a>
-            Affiliate Program
+        <header id="da-landing-header">
+            <div class="da-container">
+                <a id="da-landing-logo" href="#">
+                    <img src="/wp-content/plugins/dream-affiliate/images/funnydate/logo.png" alt=""/>
+                </a>
+                
+                <a class="da-singin" href="<?php echo get_home_url(); ?>/affiliate/dashboard">Sing In</a>
+            </div>
         </header>

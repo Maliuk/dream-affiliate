@@ -27,7 +27,7 @@ function my_theme_redirect() {
 
         do_theme_redirect($return_template);
     } else if ($wp->query_vars["pagename"] == 'affiliate') {
-        $templatefilename = 'page-affiliate.php';
+        $templatefilename = 'page-landing.php';
 
         if (file_exists(TEMPLATEPATH . '/' . $templatefilename)) {
             $return_template = TEMPLATEPATH . '/' . $templatefilename;
