@@ -401,11 +401,11 @@ body.dream-affiliate {
   text-align: center;
   padding: 5px 15px;
   margin: 5px 0; }
-  .da-message .da-success {
+  .da-message.da-success {
     background-color: rgba(69, 190, 137, 0.2);
     color: #45be89;
     border: 1px solid #45be89; }
-  .da-message .da-error {
+  .da-message.da-error {
     color: #f96f65;
     background-color: rgba(249, 111, 101, 0.2);
     border: 1px solid #f96f65; }
@@ -419,6 +419,14 @@ body.dream-affiliate {
 
 .da-login-form {
   padding-top: 120px; }
+
+#da-marketing-table td:first-child {
+  width: 200px; }
+#da-marketing-table td:last-child {
+  text-align: center;
+  font-size: 24px; }
+#da-marketing-table textarea {
+  height: 100px; }
 
 #da-content {
   position: relative;

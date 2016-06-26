@@ -2,8 +2,6 @@
 
 <?php
 $clients = $da->getClients();
-
-//var_dump($clients);
 ?>
 
 <div class="da-inner-content">
@@ -22,6 +20,19 @@ $clients = $da->getClients();
 
         <tbody>
             <?php foreach ($clients as $client) { ?>
+
+                <?php
+                $isActive = $da->isClientActive($client->ID);
+
+                $className = 'da-register';
+                $status = 'Register';
+
+                if ($isActive) {
+                    $className = 'da-active';
+                    $status = 'Active';
+                }
+                ?>
+
                 <tr data-user-id="<?php echo $client->ID; ?>">
                     <td><?php echo $client->display_name ?></td>
                     <td>
@@ -36,9 +47,17 @@ $clients = $da->getClients();
                         echo date_format($date, 'd.m.Y');
                         ?>
                     </td>
-                    <td>-</td>
-                    <td>0$</td>
-                    <td class="da-register">Register</td>
+                    <td>
+                        <?php
+                        if ($isActive) {
+                            $date = date_create($isActive->date);
+                            echo date_format($date, 'd.m.Y');
+                        }
+                        //echo $isActive->date;
+                        ?>
+                    </td>
+                    <td><?php echo $isActive ? $da->clientAmount($client->ID) : '0'; ?>$</td>
+                    <td class="<?php echo $className; ?>"><?php echo $status; ?></td>
                     <td>
                         <a href="#" class="da-action da-delete"></a>
                     </td>

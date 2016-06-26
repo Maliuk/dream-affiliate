@@ -42,7 +42,7 @@ if (isset($_COOKIE['da_affiliate'])) {
                     Number of Cilents
                 </figcaption>
                 <div class="da-figbody">
-                    840
+                    <?php echo $da->getClientsCount(); ?>
                 </div>
             </figure>
         </li>
@@ -53,7 +53,7 @@ if (isset($_COOKIE['da_affiliate'])) {
                     Number of Partners
                 </figcaption>
                 <div class="da-figbody">
-                    750
+                    <?php echo $da->getPartnersCount(); ?>
                 </div>
             </figure>
         </li>

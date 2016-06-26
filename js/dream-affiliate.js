@@ -1,16 +1,20 @@
 jQuery(document).ready(function ($) {
 
+    var isAjaxing = false;
+
     $('#da-sidebar > ul > li a[href="#"]').click(function (e) {
         e.preventDefault();
     });
 
-    $('#da-sidebar > ul > li').click(function (e) {
-        $('#da-sidebar > ul > li').removeClass('active');
-        $(this).addClass('active');
-    });
-
     $('#da-sidebar > ul > li a').click(function (e) {
-        //e.preventDefault();
+        if (isAjaxing) {
+            e.preventDefault();
+            return;
+        }
+        $('#da-sidebar > ul > li').removeClass('active');
+        $(this).parents('li').addClass('active');
+        isAjaxing = true;
+
         var body = $("html, body");
         body.stop().animate({scrollTop: 0}, '500');
 
@@ -27,19 +31,22 @@ jQuery(document).ready(function ($) {
 
             $('.da-ajax-content').removeClass('da-hidden');
             $('.da-preloader').addClass('da-hidden');
-
+            isAjaxing = false;
             afterAjaxActions();
         }).error(function () {
             $('.da-ajax-content').html('<h2>Error!</h2>');
 
             $('.da-ajax-content').removeClass('da-hidden');
             $('.da-preloader').addClass('da-hidden');
+
+            isAjaxing = false;
         });
     });
 
     $('#da-sidebar > ul > li:first-child a').click();
 
     function afterAjaxActions() {
+
         $('#da-content table .da-delete').click(function (e) {
             e.preventDefault();
 
@@ -121,6 +128,19 @@ jQuery(document).ready(function ($) {
                 $('.da-inner-preloader').addClass('da-hidden');
             });
             return false;
+        });
+
+
+        $("#da-marketing-table textarea").focus(function () {
+            var $this = $(this);
+            $this.select();
+
+            // Work around Chrome's little problem
+            $this.mouseup(function () {
+                // Prevent further mouseup intervention
+                $this.unbind("mouseup");
+                return false;
+            });
         });
     }
 

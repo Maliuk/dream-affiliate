@@ -20,11 +20,9 @@ if (!class_exists('DreamAffiliate')) {
 
     class DreamAffiliate {
 
-        public static $affiliate_id;
-
         public function __construct() {
 
-            add_action('wp_enqueue_scripts', array('DreamAffiliate', 'initStylesScripts'), 9999);
+            add_action('wp_enqueue_scripts', array($this, 'initStylesScripts'), 9999);
 
             // Функция которая исполняется при активации плагина
             register_activation_hook(__FILE__, array('DreamAffiliate', 'activate'));
@@ -42,15 +40,6 @@ if (!class_exists('DreamAffiliate')) {
         }
 
         function wp_loaded_action() {
-            /* $user_ID = get_current_user_id();
-
-              global $wpdb;
-              $table_name = $wpdb->prefix . "dream_affiliate";
-
-              $affiliate_id = $wpdb->get_var("SELECT id FROM $table_name WHERE partner_id=$user_ID");
-
-              DreamAffiliate::$affiliate_id = $affiliate_id; */
-
             //wp_set_password('qwerty123', 85);
         }
 
@@ -136,6 +125,30 @@ if (!class_exists('DreamAffiliate')) {
 
             return $results;
         }
+        
+        public function isClientActive($client_id) {
+            global $wpdb;
+            $affiliate_id = $this->getAffiliateId();
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $result = $wpdb->get_row("SELECT amount, date FROM $table_name WHERE date IN (SELECT max(date) FROM $table_name WHERE client_id = $client_id)");
+            return $result;
+        }
+        
+        public function clientAmount($client_id) {
+            global $wpdb;
+            $affiliate_id = $this->getAffiliateId();
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $result = $wpdb->get_var("SELECT SUM(amount) FROM $table_name WHERE client_id = $client_id AND affiliate_id = $affiliate_id");
+            return $result;
+        }
+        
+        public function getClientsCount() {
+            global $wpdb;
+            $table_clients = $wpdb->prefix . "dream_affiliate_clients";
+            $affiliate_id = $this->getAffiliateId();
+            $result = $wpdb->get_var("SELECT COUNT(*) FROM $table_clients WHERE affiliate_id = $affiliate_id");
+            return $result;
+        }
 
         public function getAffiliateId() {
             $user_ID = get_current_user_id();
@@ -151,6 +164,13 @@ if (!class_exists('DreamAffiliate')) {
         public function getAffiliateUrl() {
             return get_home_url() . '/?affiliate=' . $this->getAffiliateId();
         }
+        
+        public function getPartnersCount() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate";
+            $result = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
+            return $result;
+        }
 
         public function getCurrentUser() {
             $current_user = wp_get_current_user();
@@ -159,7 +179,7 @@ if (!class_exists('DreamAffiliate')) {
 
         /* STYLES & SCRIPTS */
 
-        public static function initStylesScripts() {
+        public function initStylesScripts() {
             /* STYLES */
             wp_enqueue_style('da-frontend', '/wp-content/plugins/dream-affiliate/css/affiliate-frontend.css');
 
@@ -169,7 +189,10 @@ if (!class_exists('DreamAffiliate')) {
 
             wp_enqueue_script("EJSChart");
             wp_enqueue_script("dream-affiliate");
-            wp_localize_script('dream-affiliate', 'da_variables', array('ajax_url' => admin_url('admin-ajax.php')));
+            wp_localize_script('dream-affiliate', 'da_variables', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'affiliateId' => $this->getAffiliateId()
+            ));
         }
 
         public static function createTable() {
@@ -203,18 +226,38 @@ if (!class_exists('DreamAffiliate')) {
 
                 dbDelta($sql);
             }
+            
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            
+            if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+
+                $sql = "CREATE TABLE " . $table_name . " (
+                    id bigint(20) NOT NULL AUTO_INCREMENT,
+                    affiliate_id bigint(20) NOT NULL,
+                    client_id bigint(20) NOT NULL,
+                    amount float(10,2),
+                    date DATETIME NOT NULL,
+                    UNIQUE KEY id (id),
+                    FOREIGN KEY (affiliate_id) REFERENCES {$wpdb->prefix}dream_affiliate(id),
+                    FOREIGN KEY (client_id) REFERENCES {$wpdb->prefix}users(ID)
+                 ) DEFAULT CHARACTER SET $wpdb->charset";
+
+                dbDelta($sql);
+            }
         }
 
         public static function clearTable() {
             global $wpdb;
             $wpdb->query("DELETE FROM {$wpdb->prefix}dream_affiliate");
             $wpdb->query("DELETE FROM {$wpdb->prefix}dream_affiliate_clients");
+            $wpdb->query("DELETE FROM {$wpdb->prefix}dream_affiliate_payments");
         }
 
         public static function dropTable() {
             global $wpdb;
             $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}dream_affiliate;");
             $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}dream_affiliate_clients;");
+            $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}dream_affiliate_payments;");
         }
 
         /* PLUGIN ACTIONS */
