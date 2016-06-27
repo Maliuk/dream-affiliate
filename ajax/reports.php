@@ -16,71 +16,30 @@
         </thead>
 
         <tbody>
-            <tr>
-                <td>Client Name</td>
-                <td>100$</td>
-                <td>1.1.2016</td>
-                <td class="da-register">Register</td>
-                <td>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Client Name</td>
-                <td>100$</td>
-                <td>1.1.2016</td>
-                <td class="da-active">Active</td>
-                <td>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Client Name</td>
-                <td>100$</td>
-                <td>1.1.2016</td>
-                <td class="da-active">Active</td>
-                <td>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Client Name</td>
-                <td>100$</td>
-                <td>1.1.2016</td>
-                <td class="da-register">Register</td>
-                <td>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Client Name</td>
-                <td>100$</td>
-                <td>1.1.2016</td>
-                <td class="da-active">Active</td>
-                <td>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Client Name</td>
-                <td>100$</td>
-                <td>1.1.2016</td>
-                <td class="da-register">Register</td>
-                <td>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
+            <?php
+            //var_dump($da->getReports());
+            ?>
+
+            <?php
+            $reports = $da->getReports();
+            foreach ($reports as $report) {
+                ?>
+                <tr>
+                    <td><?php echo $report->display_name; ?></td>
+                    <td><?php echo $report->amount; ?>$</td>
+                    <td>
+                        <?php
+                        $date = date_create($report->date);
+                        echo date_format($date, 'd.m.Y');
+                        ?>
+                    </td>
+                    <td class="da-active">Active</td>
+                    <td>
+                        <a href="#" class="da-action da-edit"></a>
+                        <a href="#" class="da-action da-delete"></a>
+                    </td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>

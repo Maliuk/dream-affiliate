@@ -119,9 +119,17 @@ if (!class_exists('DreamAffiliate')) {
             $table_clients = $wpdb->prefix . "dream_affiliate_clients";
             $table_users = $wpdb->users;
             $affiliate_id = $this->getAffiliateId();
+            
+            $sql = "SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
+                    . " WHERE users.ID = clients.client_id AND clients.affiliate_id = $affiliate_id GROUP BY users.ID ORDER BY users.user_registered DESC";
+            
+            if (current_user_can('administrator')) {
+                $sql = "SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
+                    . " WHERE users.ID = clients.client_id GROUP BY users.ID ORDER BY users.user_registered DESC";
+            
+            }  
 
-            $results = $wpdb->get_results("SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
-                    . " WHERE users.ID = clients.client_id AND clients.affiliate_id = $affiliate_id GROUP BY users.ID ORDER BY users.user_registered DESC");
+            $results = $wpdb->get_results($sql);
 
             return $results;
         }
@@ -149,6 +157,24 @@ if (!class_exists('DreamAffiliate')) {
             $result = $wpdb->get_var("SELECT COUNT(*) FROM $table_clients WHERE affiliate_id = $affiliate_id");
             return $result;
         }
+        
+        public function getReports() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $affiliate_id = $this->getAffiliateId();
+            $results = $wpdb->get_results("SELECT users.display_name, payments.* "
+                    . "FROM $wpdb->users as users, $table_name as payments "
+                    . "WHERE payments.affiliate_id = $affiliate_id AND users.ID = payments.client_id ORDER BY payments.date DESC");
+            return $results;
+        }
+        
+        public function getIncome() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $affiliate_id = $this->getAffiliateId();
+            $result = $wpdb->get_var("SELECT SUM(amount) FROM $table_name WHERE affiliate_id = $affiliate_id");
+            return $result ? $result : 0;
+        }
 
         public function getAffiliateId() {
             $user_ID = get_current_user_id();
@@ -170,6 +196,16 @@ if (!class_exists('DreamAffiliate')) {
             $table_name = $wpdb->prefix . "dream_affiliate";
             $result = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
             return $result;
+        }
+        
+        public function getPartners() {
+            global $wpdb;
+            $table_affiliate = $wpdb->prefix . "dream_affiliate";
+            $args = array(
+                'role' => 'partner'
+            );
+            $results = get_users( $args );
+            return $results;
         }
 
         public function getCurrentUser() {

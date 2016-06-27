@@ -31,7 +31,7 @@ if (isset($_COOKIE['da_affiliate'])) {
                     Monthly Income
                 </figcaption>
                 <div class="da-figbody">
-                    10.000
+                    <?php echo $da->getIncome(); ?>
                 </div>
             </figure>
         </li>

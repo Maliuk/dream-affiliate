@@ -2,7 +2,7 @@
 
 <div class="da-inner-content da-partners">
     <input type="text" placeholder="Enter Partners Name" />
-    
+
     <table>
         <thead>
             <tr>
@@ -15,77 +15,28 @@
         </thead>
 
         <tbody>
-            <tr>
-                <td>Partner name</td>
-                <td>1.1.2016</td>
-                <td>1.000.000</td>
-                <td>10.000</td>
-                <td>
-                    <a href="#" class="da-action da-profile"></a>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
+            <?php
+            $partners = $da->getPartners();
+            ?>
 
-            <tr>
-                <td>Partner name</td>
-                <td>1.1.2016</td>
-                <td>1.000.000</td>
-                <td>10.000</td>
-                <td>
-                    <a href="#" class="da-action da-profile"></a>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Partner name</td>
-                <td>1.1.2016</td>
-                <td>1.000.000</td>
-                <td>10.000</td>
-                <td>
-                    <a href="#" class="da-action da-profile"></a>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Partner name</td>
-                <td>1.1.2016</td>
-                <td>1.000.000</td>
-                <td>10.000</td>
-                <td>
-                    <a href="#" class="da-action da-profile"></a>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Partner name</td>
-                <td>1.1.2016</td>
-                <td>1.000.000</td>
-                <td>10.000</td>
-                <td>
-                    <a href="#" class="da-action da-profile"></a>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>Partner name</td>
-                <td>1.1.2016</td>
-                <td>1.000.000</td>
-                <td>10.000</td>
-                <td>
-                    <a href="#" class="da-action da-profile"></a>
-                    <a href="#" class="da-action da-edit"></a>
-                    <a href="#" class="da-action da-delete"></a>
-                </td>
-            </tr>
+            <?php foreach ($partners as $partner) { ?>
+                <tr data-user-id="<?php echo $partner->ID; ?>">
+                    <td><?php echo $partner->display_name; ?></td>
+                    <td>
+                        <?php
+                        $date = date_create($partner->user_registered);
+                        echo date_format($date, 'd.m.Y');
+                        ?>
+                    </td>
+                    <td>1.000.000</td>
+                    <td>10.000</td>
+                    <td>
+                        <a href="#" class="da-action da-profile"></a>
+                        <a href="#" class="da-action da-edit"></a>
+                        <a href="#" class="da-action da-delete"></a>
+                    </td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>
