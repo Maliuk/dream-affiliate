@@ -10,6 +10,8 @@ if (isset($_COOKIE['da_affiliate'])) {
 //foreach($stat as $key => $st) {
 //    echo "amount: $st->amount <br />year: $st->year <br />month: $st->month <br /><br />";
 //}
+
+//$da->setPayment(56, 45);
 ?>
 
 <h3 class="da-title">Dashboard</h3>
@@ -100,6 +102,7 @@ if (isset($_COOKIE['da_affiliate'])) {
                 for (var i in data) {
                     chartData.push(new Array(data[i]['month'], data[i]['amount']));
                 }
+                chartData.unshift(new Array('|', 0));
 
                 myChart2.addSeries(new EJSC.AreaSeries(
                         new EJSC.ArrayDataHandler(chartData), {

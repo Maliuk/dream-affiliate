@@ -152,13 +152,6 @@ if (!class_exists('DreamAffiliate')) {
             $result = $wpdb->get_results("SELECT * FROM $table_name WHERE client_id = $user_id");
             return $result ? $result : false;
         }
-        
-        public function getAffiliateByClient($user_id) {
-            global $wpdb;
-            $table_name = $wpdb->prefix . "dream_affiliate_clients";
-            $result = $wpdb->get_row("SELECT affiliate_id FROM $table_name WHERE client_id = $user_id");
-            return $result ? $result : false;
-        }
 
         public function clientAmount($client_id) {
             global $wpdb;
@@ -186,6 +179,13 @@ if (!class_exists('DreamAffiliate')) {
 
             return $affiliate_id;
         }
+        
+        public function getAffiliateByClient($user_id) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_clients";
+            $result = $wpdb->get_var("SELECT affiliate_id FROM $table_name WHERE client_id = $user_id");
+            return $result ? (int)$result : false;
+        }
 
         public function getAffiliateUrl() {
             return get_home_url() . '/?affiliate=' . $this->getAffiliateId();
@@ -193,10 +193,11 @@ if (!class_exists('DreamAffiliate')) {
 
         public function setPayment($user_id, $amount) {
             $affiliate_id = $this->getAffiliateByClient($user_id);
-            if ($affiliate_id && isset($user_id) && $amount) {
+            if ($affiliate_id && isset($user_id) && isset($amount)) {
+                $amount = (float)($amount / 2.0);
+                
                 global $wpdb;
                 $table_name = $wpdb->prefix . "dream_affiliate_payments";
-                $affiliate_id = $this->getAffiliateId();
                 $result = $wpdb->insert($table_name, array(
                     'affiliate_id' => $affiliate_id,
                     'client_id' => $user_id,

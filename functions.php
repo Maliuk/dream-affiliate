@@ -109,25 +109,34 @@ function update_user() {
 add_action('wp_ajax_nopriv_update_user', 'update_user');
 add_action('wp_ajax_update_user', 'update_user');
 
+
+
 function wpa_pmpro_add_order($morder) {
-    global $da;
     
     if (!empty($morder->total) || !empty($morder->subtotal)) {
+        global $da;
+        
+        
+        /*echo $da->setPayment($morder->user_id, $morder->total);
+        var_dump($da->getAffiliateByClient($morder->user_id));
+        die();*/
+        
         if (!empty($morder->total))
             $sale_amt = $morder->total; //TODO - The commission will be calculated based on this amount
         else
             $sale_amt = $morder->subtotal;
+        
         $unique_transaction_id = $morder->code; //TODO - The unique transaction ID for reference
         $muser = get_userdata($morder->user_id);
         $email = $muser->user_email; //TODO - Customer email for record
         //need to get the last order before this
-        $last_order = new MemberOrder();
-        $last_order->getLastMemberOrder($morder->user_id);
+        //$last_order = new MemberOrder();
+        //$last_order->getLastMemberOrder($morder->user_id);
 
-        if (!empty($last_order->affiliate_id)) {
+        if (true) {
             //wp_affiliate_log_debug("wpa_pmpro_add_order() - affiliate id: " . $last_order->affiliate_id . ". Order id: " . $unique_transaction_id, true);
 
-            $referrer = $last_order->affiliate_id;
+            //$referrer = $last_order->affiliate_id;
 
             //perform commission if status is success
             if ($morder->status == "success") {
@@ -135,14 +144,10 @@ function wpa_pmpro_add_order($morder) {
                 $da->setPayment($morder->user_id, $morder->total);
                 
             }
-
-            //update the affiliate id for this order
-            global $wpa_pmpro_affiliate_id;
-            $wpa_pmpro_affiliate_id = $referrer;
         } else {
             //wp_affiliate_log_debug("wpa_pmpro_add_order() - No affiliate id. Order id: " . $unique_transaction_id, true);
         }
     }
 }
 
-add_action("pmpro_add_order", "wpa_pmpro_add_order");
+add_action("pmpro_add_order", "wpa_pmpro_add_order", 9999);
