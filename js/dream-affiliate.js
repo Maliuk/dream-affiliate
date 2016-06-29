@@ -57,43 +57,6 @@ jQuery(document).ready(function ($) {
             }
         });
 
-        if ($('#chartTotalRevenue').length > 0) {
-            var myChart2 = new EJSC.Chart('chartTotalRevenue', {
-                title: "",
-                show_legend: false,
-                axis_bottom: {
-                    caption: "Month"
-                },
-                axis_left: {
-                    caption: "",
-                    formatter: new EJSC.NumberFormatter({currency_symbol: "$", forced_decimals: 2, variable_decimals: 2})
-                },
-                show_hints: true
-            }
-            );
-
-            myChart2.addSeries(new EJSC.AreaSeries(
-                    new EJSC.ArrayDataHandler(
-                            [
-                                ["January", 10000],
-                                ["February", 1500],
-                                ["March", 856],
-                                ["April", 6200],
-                                ["May", 750],
-                                ["June", 8500],
-                                ["July", 2000],
-                                ["August", 2235],
-                                ["September", 3400],
-                                ["October", 6528],
-                                ["November", 4200],
-                                ["December", 5500]
-                            ]
-                            ), {
-                title: "Area",
-                color: 'rgb(0,192,227)'
-            }));
-        }
-
 
         $('#da-edit-user').on("submit", function () {
             var data = $(this).serialize();

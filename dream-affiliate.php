@@ -103,6 +103,11 @@ if (!class_exists('DreamAffiliate')) {
             return wp_update_user($userdata);
         }
 
+        public function getCurrentUser() {
+            $current_user = wp_get_current_user();
+            return $current_user;
+        }
+
         function addClient($affiliate_id, $client_id) {
             global $wpdb;
             $table_name = $wpdb->prefix . "dream_affiliate_clients";
@@ -119,21 +124,20 @@ if (!class_exists('DreamAffiliate')) {
             $table_clients = $wpdb->prefix . "dream_affiliate_clients";
             $table_users = $wpdb->users;
             $affiliate_id = $this->getAffiliateId();
-            
+
             $sql = "SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
                     . " WHERE users.ID = clients.client_id AND clients.affiliate_id = $affiliate_id GROUP BY users.ID ORDER BY users.user_registered DESC";
-            
+
             if (current_user_can('administrator')) {
                 $sql = "SELECT users.* FROM $table_users as users, $table_clients as clients, $table_affiliate as affiliate"
-                    . " WHERE users.ID = clients.client_id GROUP BY users.ID ORDER BY users.user_registered DESC";
-            
-            }  
+                        . " WHERE users.ID = clients.client_id GROUP BY users.ID ORDER BY users.user_registered DESC";
+            }
 
             $results = $wpdb->get_results($sql);
 
             return $results;
         }
-        
+
         public function isClientActive($client_id) {
             global $wpdb;
             $affiliate_id = $this->getAffiliateId();
@@ -141,7 +145,21 @@ if (!class_exists('DreamAffiliate')) {
             $result = $wpdb->get_row("SELECT amount, date FROM $table_name WHERE date IN (SELECT max(date) FROM $table_name WHERE client_id = $client_id)");
             return $result;
         }
+
+        public function isClient($user_id) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_clients";
+            $result = $wpdb->get_results("SELECT * FROM $table_name WHERE client_id = $user_id");
+            return $result ? $result : false;
+        }
         
+        public function getAffiliateByClient($user_id) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_clients";
+            $result = $wpdb->get_row("SELECT affiliate_id FROM $table_name WHERE client_id = $user_id");
+            return $result ? $result : false;
+        }
+
         public function clientAmount($client_id) {
             global $wpdb;
             $affiliate_id = $this->getAffiliateId();
@@ -149,31 +167,13 @@ if (!class_exists('DreamAffiliate')) {
             $result = $wpdb->get_var("SELECT SUM(amount) FROM $table_name WHERE client_id = $client_id AND affiliate_id = $affiliate_id");
             return $result;
         }
-        
+
         public function getClientsCount() {
             global $wpdb;
             $table_clients = $wpdb->prefix . "dream_affiliate_clients";
             $affiliate_id = $this->getAffiliateId();
             $result = $wpdb->get_var("SELECT COUNT(*) FROM $table_clients WHERE affiliate_id = $affiliate_id");
             return $result;
-        }
-        
-        public function getReports() {
-            global $wpdb;
-            $table_name = $wpdb->prefix . "dream_affiliate_payments";
-            $affiliate_id = $this->getAffiliateId();
-            $results = $wpdb->get_results("SELECT users.display_name, payments.* "
-                    . "FROM $wpdb->users as users, $table_name as payments "
-                    . "WHERE payments.affiliate_id = $affiliate_id AND users.ID = payments.client_id ORDER BY payments.date DESC");
-            return $results;
-        }
-        
-        public function getIncome() {
-            global $wpdb;
-            $table_name = $wpdb->prefix . "dream_affiliate_payments";
-            $affiliate_id = $this->getAffiliateId();
-            $result = $wpdb->get_var("SELECT SUM(amount) FROM $table_name WHERE affiliate_id = $affiliate_id");
-            return $result ? $result : 0;
         }
 
         public function getAffiliateId() {
@@ -190,27 +190,82 @@ if (!class_exists('DreamAffiliate')) {
         public function getAffiliateUrl() {
             return get_home_url() . '/?affiliate=' . $this->getAffiliateId();
         }
-        
+
+        public function setPayment($user_id, $amount) {
+            $affiliate_id = $this->getAffiliateByClient($user_id);
+            if ($affiliate_id && isset($user_id) && $amount) {
+                global $wpdb;
+                $table_name = $wpdb->prefix . "dream_affiliate_payments";
+                $affiliate_id = $this->getAffiliateId();
+                $result = $wpdb->insert($table_name, array(
+                    'affiliate_id' => $affiliate_id,
+                    'client_id' => $user_id,
+                    'amount' => $amount,
+                    'date' => date("Y-m-d H:i:s")
+                ));
+            }
+            else {
+                $result = false;
+            }
+            
+            return $result;
+        }
+
+        /* STATISTIC */
+
         public function getPartnersCount() {
             global $wpdb;
             $table_name = $wpdb->prefix . "dream_affiliate";
             $result = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
             return $result;
         }
-        
+
         public function getPartners() {
             global $wpdb;
             $table_affiliate = $wpdb->prefix . "dream_affiliate";
             $args = array(
                 'role' => 'partner'
             );
-            $results = get_users( $args );
+            $results = get_users($args);
             return $results;
         }
 
-        public function getCurrentUser() {
-            $current_user = wp_get_current_user();
-            return $current_user;
+        public function getReports() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $affiliate_id = $this->getAffiliateId();
+            $results = $wpdb->get_results("SELECT users.display_name, payments.* "
+                    . "FROM $wpdb->users as users, $table_name as payments "
+                    . "WHERE payments.affiliate_id = $affiliate_id AND users.ID = payments.client_id ORDER BY payments.date DESC");
+            return $results;
+        }
+
+        public function getIncome() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $affiliate_id = $this->getAffiliateId();
+            $result = $wpdb->get_var("SELECT SUM(amount) FROM $table_name WHERE affiliate_id = $affiliate_id");
+            return $result ? $result : 0;
+        }
+
+        public function getMonthStatistic() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $affiliate_id = $this->getAffiliateId();
+            $results = $wpdb->get_results("SELECT SUM(amount) as amount, YEAR(date) as year, MONTHNAME(date) as month "
+                    . "FROM $table_name "
+                    . "WHERE affiliate_id = $affiliate_id "
+                    . "GROUP BY YEAR(date), MONTH(date) ORDER BY YEAR(date), MONTH(date)");
+
+            return $results ? $results : 0;
+        }
+
+        public function getAverageMonth() {
+            $monthStatistic = $this->getMonthStatistic();
+            if ($monthStatistic) {
+                $result = $this->getIncome() / count($monthStatistic);
+            }
+            return round($result, 2);
         }
 
         /* STYLES & SCRIPTS */
@@ -262,9 +317,9 @@ if (!class_exists('DreamAffiliate')) {
 
                 dbDelta($sql);
             }
-            
+
             $table_name = $wpdb->prefix . "dream_affiliate_payments";
-            
+
             if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 
                 $sql = "CREATE TABLE " . $table_name . " (

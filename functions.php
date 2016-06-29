@@ -87,21 +87,20 @@ function update_user() {
 
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    
+
     if (isset($_POST['password']) && isset($_POST['confirm_password']) && $password === $confirm_password) {
         $userdata['user_pass'] = $password;
     }
 
     if ($password === $confirm_password) {
         wp_send_json_success($da->updateCurrentUser($userdata, $usermeta));
-    }
-    else {
+    } else {
         $data = array(
             'errors' => array(
                 'confirm_password' => 'Password is wrong!'
             )
         );
-        
+
         wp_send_json_success($data);
     }
     die();
@@ -109,3 +108,41 @@ function update_user() {
 
 add_action('wp_ajax_nopriv_update_user', 'update_user');
 add_action('wp_ajax_update_user', 'update_user');
+
+function wpa_pmpro_add_order($morder) {
+    global $da;
+    
+    if (!empty($morder->total) || !empty($morder->subtotal)) {
+        if (!empty($morder->total))
+            $sale_amt = $morder->total; //TODO - The commission will be calculated based on this amount
+        else
+            $sale_amt = $morder->subtotal;
+        $unique_transaction_id = $morder->code; //TODO - The unique transaction ID for reference
+        $muser = get_userdata($morder->user_id);
+        $email = $muser->user_email; //TODO - Customer email for record
+        //need to get the last order before this
+        $last_order = new MemberOrder();
+        $last_order->getLastMemberOrder($morder->user_id);
+
+        if (!empty($last_order->affiliate_id)) {
+            //wp_affiliate_log_debug("wpa_pmpro_add_order() - affiliate id: " . $last_order->affiliate_id . ". Order id: " . $unique_transaction_id, true);
+
+            $referrer = $last_order->affiliate_id;
+
+            //perform commission if status is success
+            if ($morder->status == "success") {
+                //do_action('wp_affiliate_process_cart_commission', array("referrer" => $referrer, "sale_amt" => $sale_amt, "txn_id" => $unique_transaction_id, "buyer_email" => $email));
+                $da->setPayment($morder->user_id, $morder->total);
+                
+            }
+
+            //update the affiliate id for this order
+            global $wpa_pmpro_affiliate_id;
+            $wpa_pmpro_affiliate_id = $referrer;
+        } else {
+            //wp_affiliate_log_debug("wpa_pmpro_add_order() - No affiliate id. Order id: " . $unique_transaction_id, true);
+        }
+    }
+}
+
+add_action("pmpro_add_order", "wpa_pmpro_add_order");
