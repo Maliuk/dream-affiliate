@@ -116,6 +116,32 @@ jQuery(document).ready(function ($) {
 
         if ($('.da-partners table').length > 0) {
             var table = $('.da-partners table').DataTable({
+                "order": [[1, "desc"]]
+            });
+
+            $('#search_partner_name').on("keyup", function () {
+                table
+                        .columns(0)
+                        .search(this.value)
+                        .draw();
+            });
+        }
+        
+        if ($('.da-reports table').length > 0) {
+            var table = $('.da-reports table').DataTable({
+                "order": [[2, "desc"]]
+            });
+
+            $('#search_client_name').on("keyup", function () {
+                table
+                        .columns(0)
+                        .search(this.value)
+                        .draw();
+            });
+        }
+        
+        if ($('.da-clients table').length > 0) {
+            var table = $('.da-clients table').DataTable({
                 "order": [[2, "desc"]]
             });
 

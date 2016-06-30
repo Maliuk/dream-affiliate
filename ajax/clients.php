@@ -4,7 +4,9 @@
 $clients = $da->getClients();
 ?>
 
-<div class="da-inner-content">
+<div class="da-inner-content da-clients">
+    <input id="search_client_name" type="text" placeholder="Client name" />
+    
     <table>
         <thead>
             <tr>

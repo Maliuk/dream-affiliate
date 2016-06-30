@@ -1,8 +1,8 @@
 <h3 class="da-title">Reports</h3>
 
-<div class="da-inner-content da-partners">
+<div class="da-inner-content da-reports">
     <input id="search_client_name" type="text" placeholder="Client name" />
-    <input type="text" placeholder="Status" />
+    <!--<input type="text" placeholder="Status" />-->
 
     <table>
         <thead>
@@ -16,9 +16,6 @@
         </thead>
 
         <tbody>
-            <?php
-            //var_dump($da->getReports());
-            ?>
 
             <?php
             $reports = $da->getReports();

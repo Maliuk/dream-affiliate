@@ -32,7 +32,7 @@ if (!class_exists('DreamAffiliate')) {
             register_uninstall_hook(__FILE__, array('DreamAffiliate', 'uninstall'));
 
             if (isset($_GET['affiliate'])) {
-                setcookie('da_affiliate', $_GET['affiliate'], strtotime('+1 day'));
+                setcookie('da_affiliate', $_GET['affiliate'], strtotime('+90 day'));
             }
 
             add_action('wp_loaded', [$this, 'wp_loaded_action'], 99);
@@ -46,7 +46,7 @@ if (!class_exists('DreamAffiliate')) {
         function user_register_action($user_id) {
             if (isset($_COOKIE['da_affiliate'])) {
                 $this->addClient($_COOKIE['da_affiliate'], $user_id);
-                setcookie('da_affiliate', "", strtotime('-1 day'));
+                setcookie('da_affiliate', "", strtotime('-90 day'));
             }
         }
 
@@ -246,7 +246,15 @@ if (!class_exists('DreamAffiliate')) {
             $table_name = $wpdb->prefix . "dream_affiliate_payments";
             $affiliate_id = $this->getAffiliateId();
             $result = $wpdb->get_var("SELECT SUM(amount) FROM $table_name WHERE affiliate_id = $affiliate_id");
-            return $result ? $result : 0;
+            return $result ? round($result, 2) : 0;
+        }
+        
+        public function getAverageIncome() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . "dream_affiliate_payments";
+            $affiliate_id = $this->getAffiliateId();
+            $result = $wpdb->get_var("SELECT AVG(amount) FROM $table_name WHERE affiliate_id = $affiliate_id");
+            return $result ? round($result, 2) : 0;
         }
 
         public function getMonthStatistic() {
@@ -266,7 +274,7 @@ if (!class_exists('DreamAffiliate')) {
             if ($monthStatistic) {
                 $result = $this->getIncome() / count($monthStatistic);
             }
-            return round($result, 2);
+            return $result ? round($result, 2) : 0;
         }
 
         /* STYLES & SCRIPTS */

@@ -1,19 +1,3 @@
-<?php
-if (isset($_COOKIE['da_affiliate'])) {
-    //echo '<h1>' . $_COOKIE['da_affiliate'] . '</h1>';
-}
-
-//var_dump( $da->getMonthStatistic() );
-//
-//$stat = $da->getMonthStatistic();
-//
-//foreach($stat as $key => $st) {
-//    echo "amount: $st->amount <br />year: $st->year <br />month: $st->month <br /><br />";
-//}
-
-//$da->setPayment(56, 45);
-?>
-
 <h3 class="da-title">Dashboard</h3>
 
 <div class="da-inner-content da-dashboard">
@@ -28,7 +12,7 @@ if (isset($_COOKIE['da_affiliate'])) {
                     Average Income
                 </figcaption>
                 <div class="da-figbody">
-                    <?php echo $da->getAverageMonth(); ?>
+                    $<?php echo $da->getAverageIncome(); ?>
                 </div>
 
             </figure>
@@ -41,7 +25,7 @@ if (isset($_COOKIE['da_affiliate'])) {
                     Monthly Income
                 </figcaption>
                 <div class="da-figbody">
-                    <?php echo $da->getIncome(); ?>
+                    $<?php echo $da->getAverageMonth(); ?>
                 </div>
             </figure>
         </li>
