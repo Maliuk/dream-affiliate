@@ -6,6 +6,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
     });
 
+
     $('#da-sidebar > ul > li a').click(function (e) {
         if (isAjaxing) {
             e.preventDefault();
@@ -43,7 +44,13 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    $('#da-sidebar > ul > li:first-child a').click();
+    var hash = window.location.hash;
+    var $sLink = $('#da-sidebar > ul > li a[href="' + hash + '"]');
+    if ($sLink.length < 1) {
+        $sLink = $('#da-sidebar > ul > li:first-child a');
+    }
+    $sLink.click();
+
 
     function afterAjaxActions() {
 
@@ -105,6 +112,20 @@ jQuery(document).ready(function ($) {
                 return false;
             });
         });
+
+
+        if ($('.da-partners table').length > 0) {
+            var table = $('.da-partners table').DataTable({
+                "order": [[2, "desc"]]
+            });
+
+            $('#search_client_name').on("keyup", function () {
+                table
+                        .columns(0)
+                        .search(this.value)
+                        .draw();
+            });
+        }
     }
 
 

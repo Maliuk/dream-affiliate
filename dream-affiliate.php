@@ -273,14 +273,18 @@ if (!class_exists('DreamAffiliate')) {
 
         public function initStylesScripts() {
             /* STYLES */
+            wp_enqueue_style('datatable', '/wp-content/plugins/dream-affiliate/js/vendor/datatables/datatables.min.css');
             wp_enqueue_style('da-frontend', '/wp-content/plugins/dream-affiliate/css/affiliate-frontend.css');
 
             /* SCRIPTS */
             wp_register_script("EJSChart", "/wp-content/plugins/dream-affiliate/js/vendor/EJSCharts/EJSChart.js");
+            wp_register_script("datatable", "/wp-content/plugins/dream-affiliate/js/vendor/datatables/datatable.min.js", array("jquery"));
             wp_register_script("dream-affiliate", "/wp-content/plugins/dream-affiliate/js/dream-affiliate.js", array("jquery"), null);
 
             wp_enqueue_script("EJSChart");
+            wp_enqueue_script("datatable");
             wp_enqueue_script("dream-affiliate");
+            
             wp_localize_script('dream-affiliate', 'da_variables', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'affiliateId' => $this->getAffiliateId()

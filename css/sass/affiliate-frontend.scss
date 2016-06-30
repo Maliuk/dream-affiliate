@@ -454,3 +454,11 @@ form#da-edit-user, form#da-register-user {
 .dream-affiliate .bp_chatbar {
     display: none;
 }
+
+.dataTables_length, .dataTables_filter {
+    display: none;
+}
+
+.dataTables_info, .dataTables_paginate  {
+    margin-top: 15px;
+}

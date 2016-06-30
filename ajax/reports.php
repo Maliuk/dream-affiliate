@@ -1,7 +1,7 @@
 <h3 class="da-title">Reports</h3>
 
 <div class="da-inner-content da-partners">
-    <input type="text" placeholder="Partner" />
+    <input id="search_client_name" type="text" placeholder="Client name" />
     <input type="text" placeholder="Status" />
 
     <table>
