@@ -6,7 +6,9 @@
             <li><a href="#partners" data-id="partners">Partners</a></li>
         <?php } ?>
         <li><a href="#clients" data-id="clients">Clients</a></li>
-        <li><a href="#marketing" data-id="marketing">Marketing Tool</a></li>
-        <li><a href="#info" data-id="info">Personal Information</a></li>
+        <?php if (!current_user_can('administrator')) { ?>
+            <li><a href="#marketing" data-id="marketing">Marketing Tool</a></li>
+            <li><a href="#info" data-id="info">Personal Information</a></li>
+        <?php } ?>
     </ul>
 </div>
