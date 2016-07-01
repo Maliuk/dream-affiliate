@@ -324,8 +324,12 @@ if (!class_exists('DreamAffiliate')) {
                     affiliate_id bigint(20) NOT NULL,
                     client_id bigint(20) NOT NULL,
                     UNIQUE KEY id (id),
-                    FOREIGN KEY (affiliate_id) REFERENCES {$wpdb->prefix}dream_affiliate(id),
+                    FOREIGN KEY (affiliate_id) REFERENCES {$wpdb->prefix}dream_affiliate(id) 
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE,
                     FOREIGN KEY (client_id) REFERENCES {$wpdb->prefix}users(ID)
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE
                  ) DEFAULT CHARACTER SET $wpdb->charset";
 
                 dbDelta($sql);
@@ -342,10 +346,14 @@ if (!class_exists('DreamAffiliate')) {
                     amount float(10,2),
                     date DATETIME NOT NULL,
                     UNIQUE KEY id (id),
-                    FOREIGN KEY (affiliate_id) REFERENCES {$wpdb->prefix}dream_affiliate(id),
+                    FOREIGN KEY (affiliate_id) REFERENCES {$wpdb->prefix}dream_affiliate(id)
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE,
                     FOREIGN KEY (client_id) REFERENCES {$wpdb->prefix}users(ID)
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE
                  ) DEFAULT CHARACTER SET $wpdb->charset";
-
+                    
                 dbDelta($sql);
             }
         }

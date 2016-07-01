@@ -110,22 +110,27 @@ add_action('wp_ajax_nopriv_update_user', 'update_user');
 add_action('wp_ajax_update_user', 'update_user');
 
 
+add_action('login_form_middle', 'add_lost_password_link');
+
+function add_lost_password_link() {
+    return '<a class="lost-password" href="/wp-login.php?action=lostpassword">Lost Password?</a>';
+}
 
 function wpa_pmpro_add_order($morder) {
-    
+
     if (!empty($morder->total) || !empty($morder->subtotal)) {
         global $da;
-        
-        
-        /*echo $da->setPayment($morder->user_id, $morder->total);
-        var_dump($da->getAffiliateByClient($morder->user_id));
-        die();*/
-        
+
+
+        /* echo $da->setPayment($morder->user_id, $morder->total);
+          var_dump($da->getAffiliateByClient($morder->user_id));
+          die(); */
+
         if (!empty($morder->total))
             $sale_amt = $morder->total; //TODO - The commission will be calculated based on this amount
         else
             $sale_amt = $morder->subtotal;
-        
+
         $unique_transaction_id = $morder->code; //TODO - The unique transaction ID for reference
         $muser = get_userdata($morder->user_id);
         $email = $muser->user_email; //TODO - Customer email for record
@@ -135,14 +140,11 @@ function wpa_pmpro_add_order($morder) {
 
         if (true) {
             //wp_affiliate_log_debug("wpa_pmpro_add_order() - affiliate id: " . $last_order->affiliate_id . ". Order id: " . $unique_transaction_id, true);
-
             //$referrer = $last_order->affiliate_id;
-
             //perform commission if status is success
             if ($morder->status == "success") {
                 //do_action('wp_affiliate_process_cart_commission', array("referrer" => $referrer, "sale_amt" => $sale_amt, "txn_id" => $unique_transaction_id, "buyer_email" => $email));
                 $da->setPayment($morder->user_id, $morder->total);
-                
             }
         } else {
             //wp_affiliate_log_debug("wpa_pmpro_add_order() - No affiliate id. Order id: " . $unique_transaction_id, true);

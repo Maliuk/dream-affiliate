@@ -356,6 +356,23 @@
 
 body.dream-affiliate {
   font-family: 'Open Sans', sans-serif; }
+  body.dream-affiliate #loginform {
+    max-width: 400px;
+    padding: 25px;
+    border: 1px solid #f1f1f1;
+    background-color: #fbfbfb;
+    border-radius: 5px;
+    margin: 0 auto;
+    overflow: hidden; }
+    body.dream-affiliate #loginform label {
+      margin-bottom: 7px; }
+    body.dream-affiliate #loginform .lost-password {
+      float: right;
+      font-size: 14px; }
+    body.dream-affiliate #loginform #wp-submit {
+      float: right;
+      padding: 8px 20px !important;
+      font-size: 16px !important; }
 
 #da-header {
   position: fixed;
@@ -381,7 +398,7 @@ body.dream-affiliate {
 .da-text-right {
   text-align: right; }
 
-.da-button {
+.da-button, body.dream-affiliate #loginform #wp-submit {
   display: inline-block;
   border: none;
   background-color: #00c0e3;
@@ -392,7 +409,7 @@ body.dream-affiliate {
   font-size: 20px;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease; }
-  .da-button:hover {
+  .da-button:hover, body.dream-affiliate #loginform #wp-submit:hover {
     background-color: #006a7d; }
 
 .da-message {
