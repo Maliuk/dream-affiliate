@@ -28,6 +28,10 @@ jQuery(document).ready(function ($) {
             action: "da_ajax",
             page: page
         }).success(function (response) {
+            if (response == "redirect") {
+                window.location.href = "/affiliate/dashboard/";
+                return;
+            }
             $('.da-ajax-content').html(response);
 
             $('.da-ajax-content').removeClass('da-hidden');

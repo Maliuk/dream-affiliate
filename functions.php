@@ -53,12 +53,15 @@ function do_theme_redirect($url) {
 
 function da_ajax() {
 
-    if (isset($_POST['page'])) {
+    if (isset($_POST['page']) && (current_user_can('partner') || current_user_can('administrator'))) {
         $filename = $_POST['page'] . '.php';
         //$file = file_get_contents(PLUGIN_DIR . '/ajax/' . $filename, FILE_USE_INCLUDE_PATH);
         //echo $file;
         global $da;
         require 'ajax/' . $filename;
+    }
+    else {
+        echo "redirect";
     }
     die();
     //wp_send_json_success($dates);

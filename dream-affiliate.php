@@ -295,7 +295,8 @@ if (!class_exists('DreamAffiliate')) {
             
             wp_localize_script('dream-affiliate', 'da_variables', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'affiliateId' => $this->getAffiliateId()
+                'affiliateId' => $this->getAffiliateId(),
+                'is_loginedin' => current_user_can('partner') || current_user_can('administrator')
             ));
         }
 

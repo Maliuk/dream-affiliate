@@ -9,8 +9,8 @@
 <script>
     jQuery(document).ready(function ($) {
         console.log('Current Affiliate ID: ' + da_variables.affiliateId);
-        
         console.log('Affiliate Cookie: ' + getCookie('da_affiliate'));
+        console.log('is logined in: ' + da_variables.is_loginedin);
     });
 
     function getCookie(name) {
