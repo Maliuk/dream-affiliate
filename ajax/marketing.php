@@ -9,7 +9,7 @@
                 <img src="/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-125x125.jpg" alt=""/>
             </td>
             <td>
-                <textarea readonly><a href='http://triare.esy.es/?affiliate=5' target='_blank'> 
+                <textarea readonly><a href='<?php echo get_home_url(); ?>/?affiliate=5' target='_blank'> 
     <img src='<?php echo get_home_url(); ?>/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-125x125.jpg' alt=''/> 
 </a></textarea>
             </td>
@@ -22,7 +22,7 @@
                 <img src="/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-250x250.jpg" alt=""/>
             </td>
             <td>
-                <textarea readonly><a href='http://triare.esy.es/?affiliate=5' target='_blank'> 
+                <textarea readonly><a href='<?php echo get_home_url(); ?>/?affiliate=5' target='_blank'> 
     <img src='<?php echo get_home_url(); ?>/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-250x250.jpg' alt=''/> 
 </a></textarea>
             </td>
@@ -35,7 +35,7 @@
                 <img src="/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-300x250.jpg" alt=""/>
             </td>
             <td>
-                <textarea readonly><a href='http://triare.esy.es/?affiliate=5' target='_blank'> 
+                <textarea readonly><a href='<?php echo get_home_url(); ?>/?affiliate=5' target='_blank'> 
     <img src='<?php echo get_home_url(); ?>/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-300x250.jpg' alt=''/> 
 </a></textarea>
             </td>
@@ -48,7 +48,7 @@
                 <img src="/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-728x90.jpg" alt=""/>
             </td>
             <td>
-                <textarea readonly><a href='http://triare.esy.es/?affiliate=5' target='_blank'> 
+                <textarea readonly><a href='<?php echo get_home_url(); ?>/?affiliate=5' target='_blank'> 
     <img src='<?php echo get_home_url(); ?>/wp-content/plugins/dream-affiliate/images/Funny-Date-Banners-728x90.jpg' alt=''/> 
 </a></textarea>
             </td>
